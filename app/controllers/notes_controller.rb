@@ -5,9 +5,20 @@ class NotesController < ApplicationController
   end
 
   def create
-    # binding.pry
+    # 本当はストロングパラメーターにすべきですがサンプルなので簡易に作成
     @note = Note.new(body: params[:note][:body], user_id: current_user.id)
-    @note.save
-    redirect_to root_path
+    if @note.save
+      respond_to do |format|
+        format.html {
+          redirect_to root_path
+        }
+        format.json {
+          render json: {
+            body: @note.body,
+            user_name: @note.user.name
+          }
+        }
+      end
+    end
   end
 end
