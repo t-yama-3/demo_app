@@ -1,0 +1,41 @@
+//jQueryによるAjax（FormDataを使用する場合）
+$(function() {
+  function buildHTML(note) {
+    let html = `<div class="note">
+                  <div class="note_name">
+                    投稿者： ${note.user_name}
+                      <a class="note_option" rel="nofollow" data-method="delete" href="/notes/${note.id}">削除</a>
+                  </div>
+                  <div>
+                    <p class="note_body">${note.body}</p>
+                  </div>
+                </div>`
+    return html;
+  }
+  $("#note-id").on("submit", function(e) {
+    e.preventDefault();
+    let formData = new FormData(this);  // formタグの中身を取得する
+    let url = $(this).attr('action');  // action属性の中身(url)を抽出
+    // console.log(formData.get("authenticity_token"));  // FormDataの中身を確認する場合
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: formData,  // FormDataをそのまま渡せば良い（必要な"comment[text]"と"authenticity_token"を含む）
+      dataType: "json",
+      processData: false,  // FormDataを使用した場合に必要となる
+      contentType: false  // FormDataを使用した場合に必要となる
+    })
+    .done(function(data) {
+      let html = buildHTML(data);
+      $('.notes').append(html);
+      $('.note_form-text').val('');
+    })
+    .fail(function() {
+      alert("error!");
+    })
+    .always(function() {
+      // $('.note_form-btn').prop('disabled', false);  // デフォルトでは処理実行後にボタンが実行不可能になるため解除する
+      $(".note_form-btn").removeAttr("data-disable-with");  // こちらの記載でないとdisabledの解除ができない
+    })
+  });
+});
