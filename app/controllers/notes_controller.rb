@@ -15,7 +15,9 @@ class NotesController < ApplicationController
         format.json {
           render json: {
             body: @note.body,
-            user_name: @note.user.name
+            user_name: @note.user.name,
+            user_id: @note.user_id,
+            id: @note.id
           }
         }
       end
