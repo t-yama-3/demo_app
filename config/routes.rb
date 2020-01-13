@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :notes, only: [:index, :new, :create]
+  root to: 'notes#index'
+  resources :notes, only: [:new, :create]
 end
