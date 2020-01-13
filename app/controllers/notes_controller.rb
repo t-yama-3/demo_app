@@ -5,7 +5,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    # 本当はストロングパラメーターにすべきですがサンプルなので簡易に作成
+    # 本当はストロングパラメーターにすべきですがサンプルなので簡易作成
     @note = Note.new(body: params[:note][:body], user_id: current_user.id)
     if @note.save
       respond_to do |format|
@@ -19,6 +19,15 @@ class NotesController < ApplicationController
           }
         }
       end
+    end
+    # binding.pry
+  end
+
+  def destroy
+    # binding.pry
+    note = Note.find(params[:id])
+    if note.destroy
+      redirect_to root_path
     end
   end
 end

@@ -7,6 +7,12 @@
   <div class="note_body">
     <%= note.body %>
   </div>
+  <% if user_signed_in? && note.user_id == current_user.id %>
+  <div class="note_option">
+    本人
+    <%= link_to "削除", note_path(note.id), method: :delete %>
+  </div>
+  <% end %>
   <br />
 <% end %>
 
