@@ -20,11 +20,9 @@ class NotesController < ApplicationController
         }
       end
     end
-    # binding.pry
   end
 
   def destroy
-    # binding.pry
     note = Note.find(params[:id])
     if note.destroy
       redirect_to root_path
