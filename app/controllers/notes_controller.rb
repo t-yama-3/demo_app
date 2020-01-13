@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
   def index
     @note = Note.new
-    @notes = Note.all
+    @notes = Note.includes(:user)
   end
 
   def create
