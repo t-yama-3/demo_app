@@ -1,0 +1,13 @@
+.devise-btn {
+  padding: 2pt;
+  background-color: blue;
+  font-size: 12px;
+  text-decoration: none;
+  color: white;
+  border: solid 1px;
+}
+
+.note_name {
+  font-size: 12px;
+  color: darkslateblue;
+}
