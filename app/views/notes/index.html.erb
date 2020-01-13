@@ -1,15 +1,20 @@
-<h4>テスト表示です</h4>
+<h4>サンプルアプリ</h4>
 
 <% @notes.each do |note| %>
-  <div>
+  <div class="note_name">
+    投稿者：<%= note.user.name %>
+  </div>
+  <div class="note_body">
     <%= note.body %>
   </div>
+  <br />
 <% end %>
-<br />
 
+<div class="form">
+</div>
 <% if user_signed_in? %>
-  <%= form_with(model: @note, class: :form, local: true) do |form| %>
-    <%= form.text_area :body, placeholder: :メモ, class: "form_text" %>
-    <%= form.submit "メモを登録", class: :form_btn %>
+  <%= form_with(model: @note, class: :note_form, local: true) do |form| %>
+    <%= form.text_area :body, placeholder: :メモ, class: "note_form-text" %>
+    <%= form.submit "メモを登録", class: "note_form-btn" %>
   <% end %>
 <% end %>
