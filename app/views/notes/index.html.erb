@@ -1,6 +1,15 @@
 <h4>テスト表示です</h4>
 
-<%= form_with(model: @note, class: :form, local: true) do |form| %>
-  <%= form.text_area :body, placeholder: :メモ, class: "form_text" %>
-  <%= form.submit "メモを登録", class: :form_btn %>
+<% @notes.each do |note| %>
+  <div>
+    <%= note.body %>
+  </div>
+<% end %>
+<br />
+
+<% if user_signed_in? %>
+  <%= form_with(model: @note, class: :form, local: true) do |form| %>
+    <%= form.text_area :body, placeholder: :メモ, class: "form_text" %>
+    <%= form.submit "メモを登録", class: :form_btn %>
+  <% end %>
 <% end %>
