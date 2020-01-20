@@ -18,7 +18,7 @@ window.addEventListener("load", function() {
     aElm.setAttribute("rel", "nofollow");
     aElm.setAttribute("data-method", "delete");
     aElm.setAttribute("href", "/notes/" + note.id);
-    aElm.addEventListener("click", function(e) { deleteHTMLEvent(e, aElm) }, false); //ここが大事！
+    // aElm.addEventListener("click", function(e) { deleteHTMLEvent(e, aElm) }, false); //ここは削除メソッド実装時に使用
     pElm.setAttribute("class", "note_body");
     // ノードの結合（各子要素にテキストを追加）
     spanElm.appendChild(nameText);
@@ -30,9 +30,8 @@ window.addEventListener("load", function() {
     divElm.appendChild(pElm);
     return divElm;
   };
-
   // メモ投稿(POSTメソッド)の処理
-  let addHTMLEvent = function(e) {
+  document.getElementById("note_input").addEventListener("submit", function(e) {
     e.preventDefault();  // デフォルトのイベント（HTMLデータ送信など）を無効にする
     //送信データの生成
     let inputText = document.getElementsByClassName("note_form-text")[0].value;  // textareaの入力値を取得
@@ -64,38 +63,5 @@ window.addEventListener("load", function() {
         document.getElementsByClassName("note_form-btn")[0].removeAttribute("data-disable-with");  // submitボタンのdisableを解除(Rails5.0以降はこちらも必要)
       }
     };
-  };
-  document.getElementById("note_input").addEventListener("submit", addHTMLEvent, false);
-
-  // 削除イベントの処理
-  let deleteHTMLEvent = function(e, noteDelete) {
-    e.preventDefault();
-    e.stopPropagation();
-    let url = noteDelete.getAttribute("href") + ".json"; //末尾に .json を追加することで送信データがjson形式であることを指定する
-    // Ajax通信を実行
-    let xmlHR = new XMLHttpRequest(); //XMLHttpRequestの作成
-    xmlHR.open("DELETE", url, true); //open(HTTPメソッド, URL, 非同期通信[true:default]か同期通信[false]か）
-    xmlHR.responseType = "json"; //レスポンスデータを json形式と指定する
-    xmlHR.setRequestHeader("Content-Type", "application/json");  // リクエストヘッダーを追加(HTTP通信でJSONを送る際のルール)
-    xmlHR.setRequestHeader("X-CSRF-Token", token);  // リクエストヘッダーを追加（セキュリティトークンの追加）
-    xmlHR.send(); //サーバに送信
-    // 受信したデータの処理
-    xmlHR.onreadystatechange = function() {
-      if (xmlHR.readyState === 4) {
-        if (xmlHR.status === 200) {
-          let note = xmlHR.response;
-          document.getElementById("note" + note.id).remove();
-        } else {
-          alert(xmlHR.status);
-        }
-      }
-    };
-  };
-  let noteDeletes = document.getElementsByClassName("note_delete")
-  Array.prototype.forEach.call(noteDeletes, function(noteDelete) {
-    noteDelete.addEventListener("click", function(e) { deleteHTMLEvent(e, noteDelete) }, false);
-  });
-  // Array.prototype.forEach.call(noteDeletes, function(noteDelete) {
-  //   noteDelete.addEventListener("click", function(e) { deleteHTMLEvent(e, noteDelete) }, false);
-  // });
+  }, false);
 });

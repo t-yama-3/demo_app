@@ -5,15 +5,11 @@ class NotesController < ApplicationController
   end
 
   def create
-    # 本当はストロングパラメーターにすべきですがサンプルなので簡易作成
-    @note = Note.new(body: params[:note][:body], user_id: current_user.id)
+    @note = Note.new(note_params)
     if @note.save
       respond_to do |format|
-        format.html {
-          redirect_to root_path
-        }
-        format.json {
-          render json: {
+        format.html { redirect_to root_path }
+        format.json { render json: {
             body: @note.body,
             user_name: @note.user.name,
             user_id: @note.user_id,
@@ -25,9 +21,17 @@ class NotesController < ApplicationController
   end
 
   def destroy
-    note = Note.find(params[:id])
-    if note.destroy
-      redirect_to root_path
+    @note = Note.find(params[:id])
+    if @note.destroy
+      respond_to do |format|
+        format.html { redirect_to root_path }
+        format.json { render json: { id: params[:id] } }
+      end
     end
+  end
+  
+  private
+  def note_params
+    params.require(:note).permit(:body).merge(user_id: current_user.id)
   end
 end

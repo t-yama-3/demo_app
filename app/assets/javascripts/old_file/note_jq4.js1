@@ -1,5 +1,6 @@
 //jQueryによるAjax(FormDataを使用しない場合)
 $(function() {
+  let token = $("*[name=csrf-token]").attr("content");  // セキュリティトークンの取得
   // 追加するHTMLデータを生成する関数
   function createHTML(note) {
     let html = `<div class="note" id="note${note.id}">
@@ -18,7 +19,8 @@ $(function() {
       url: url,  // リクエストを送信するURLを指定
       type: "POST",  // HTTPメソッドを指定（デフォルトはGET）
       data: {  // 送信するデータをハッシュ形式で指定
-        "note[body]": inputText
+        "note[body]": inputText,
+        authenticity_token: token  // セキュリティトークンの送信
       },
       dataType: "json"  // レスポンスデータをjson形式と指定する
     })
@@ -33,29 +35,26 @@ $(function() {
     .always(function() {
       $(".note_form-btn").prop("disabled", false);  // submitボタンのdisableを解除
       $(".note_form-btn").removeAttr("data-disable-with");  // submitボタンのdisableを解除(Rails5.0以降はこちらも必要)
-    });
+    })
   });
   // メモ削除(DELETEメソッド)の処理
-  $(".notes").on("click", ".note_delete", function(e) {
-    e.preventDefault();  // デフォルトのイベント（リンクURLへの遷移処理など）を無効にする
-    e.stopPropagation();  // 現在のイベントのさらなる伝播（DELETEメソッドの実行）を止める
-    let url = $(this).attr("href");
-    $.ajax({
-      // url: url,
-      // type: "DELETE",  // 原則に従って"DELETE"メソッドを使用しない
-      // dataType: "json"
-      url: url,
-      type: "POST",  // 原則に従って"DELETE"メソッドを使用しない
-      data: {
-        _method: "delete",  // ここで"DELETE"メソッドを使用することを指定
-      },
-      dataType: "json"
-    })
-    .done(function(data) {
-      $("#note" + data.id).remove();  // レスポンスデータのIDを元に投稿を削除
-    })
-    .fail(function(XMLHttpRequest) {
-      alert(XMLHttpRequest.status);
-    });
-  });
+//   $(".notes").on("click", ".note_delete", function(e) {
+//     e.preventDefault();
+//     e.stopPropagation();
+//     let url = $(this).attr("href");
+//     $.ajax({
+//       url: url,
+//       type: "POST",
+//       data: {
+//         _method: "delete",
+//       },
+//       dataType: "json"
+//     })
+//     .done(function(data) {
+//       $("#note" + data.id).remove();
+//     })
+//     .fail(function(XMLHttpRequest) {
+//       alert(XMLHttpRequest.status);
+//     });
+//   });
 });

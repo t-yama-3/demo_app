@@ -1,0 +1,59 @@
+//jQueryによるAjax（FormDataを使用する場合）
+$(function() {
+  // 追加するHTMLデータを生成する関数
+  function createHTML(note) {
+    let html = `<div class="note" id="note${note.id}">
+                  <span class="note_name">投稿者：${note.user_name}</span>
+                  <a class="note_delete" rel="nofollow" data-method="delete" href="/notes/${note.id}">削除</a>
+                  <p class="note_body">${note.body}</p>
+                </div>`
+    return html;
+  }
+  // メモ投稿の処理
+  $("#note_input").on("submit", function(e) {
+    e.preventDefault();  // デフォルトのイベント(HTMLデータ送信など)を無効にする
+    let formData = new FormData(this);  //FormDataをそのまま渡せば良い（必要な"note[body]"と"authenticity_token"を含む）
+    let url = $(this).attr("action");  // action属性のurlを抽出
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: formData,
+      dataType: "json",  // レスポンスデータをjson形式と指定する
+      processData: false,  //FormDataを使用した場合に必要となる
+      contentType: false  //FormDataを使用した場合に必要となる
+    })
+    .done(function(data) {
+      let html = createHTML(data);
+      $(".notes").append(html);
+      $(".note_form-text").val("");
+    })
+    .fail(function() {
+      alert("error!");
+    })
+    .always(function() {
+      $(".note_form-btn").prop("disabled", false);  // submitボタンのdisableを解除
+      $(".note_form-btn").removeAttr("data-disable-with");  // submitボタンのdisableを解除（Rails5.0以降はこちらも必要）
+    })
+  });
+
+  // メモ削除の処理
+  $(".notes").on("click", ".note_delete", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let url = $(this).attr("href");
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: {
+        _method: "delete",
+      },
+      dataType: "json"
+    })
+    .done(function(data) {
+      $("#note" + data.id).remove();
+    })
+    .fail(function(XMLHttpRequest) {
+      alert(XMLHttpRequest.status);
+    });
+  });
+});

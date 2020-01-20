@@ -1,0 +1,64 @@
+//jQueryによるAjax（FormDataを使用しない場合）
+$(function() {
+  // 追加するHTMLデータを生成する関数
+  function buildHTML(note) {
+    let html = `<div class="note">
+                  <span class="note_name">投稿者：${note.user_name}</span>
+                  <a class="note_delete" rel="nofollow" data-method="delete" href="/notes/${note.id}">削除</a>
+                  <p class="note_body">${note.body}</p>
+                </div>`
+    return html;
+  }
+
+  let token = $("*[name=csrf-token]").attr("content");  // tokenの取得(標準)
+    // (参考) let token = $("*[name=authenticity_token]").attr("value");  // formタグ内からでもtokenの取得は可能 
+  // 以下、クリックイベントの処理
+  $("#note_input").on("submit", function(e) {
+    e.preventDefault();  // デフォルトのイベント（HTMLデータ送信など）を無効にする
+    let inputText = $(".note_form-text").val();  // textareaの入力値を取得
+    let url = $(this).attr("action");  // action属性の中身(url)を抽出
+    // Ajax通信を実行
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: {
+        "note[body]": inputText,
+        authenticity_token: token
+      },
+      dataType: "json",
+    })
+    .done(function(data) {
+      let html = buildHTML(data);
+      $(".notes").append(html);
+      $(".note_form-text").val("");
+    })
+    .fail(function() {
+      alert("error!");
+    })
+    .always(function() {
+      $(".note_form-btn").removeAttr("data-disable-with");  // submitボタンのdisableを解除（Rails5.0以降はこちらを使用）
+      // $(".note_form-btn").prop("disabled", false);  // Rails4以前はこちらを使用
+    })
+  });
+
+  $(".notes").on("click", ".note_delete", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    let thisTmp = $(this);
+    let url = $(this).attr("href");
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: {
+        _method: "delete",
+      },
+      dataType: "json"
+    })
+    .done(function(data) {
+      thisTmp.parent().remove();
+    })
+    .fail(function(XMLHttpRequest) {
+      alert(XMLHttpRequest.status);
+    });
+  });
+});
