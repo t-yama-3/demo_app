@@ -1,3 +1,8 @@
+body {
+  // font-family: 'Courier New', Courier, monospace;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 h4 {
   margin: 10px 0;
 }
@@ -30,6 +35,11 @@ h4 {
     color: darkslateblue;
   }
   &_delete {
+    font-size: 12px;
+    color: #999;
+    text-decoration: none;
+  }
+  &_edit {
     font-size: 12px;
     color: #999;
     text-decoration: none;

@@ -1,0 +1,9 @@
+<h4>メモを編集する</h4>
+<div class="form">
+  <% if user_signed_in? %>
+    <%= form_with(model: @note, class: "note_form", id: "note_input", local: true) do |form| %>
+      <%= form.text_area :body, class: "note_form-text" %>
+      <%= form.submit "メモを登録", class: "note_form-btn" %>
+    <% end %>
+  <% end %>
+</div>

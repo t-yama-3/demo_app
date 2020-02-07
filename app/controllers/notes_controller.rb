@@ -9,15 +9,13 @@ class NotesController < ApplicationController
     if @note.save
       respond_to do |format|
         format.html { redirect_to root_path }
-        format.json { render json: {
-            body: @note.body,
-            user_name: @note.user.name,
-            user_id: @note.user_id,
-            id: @note.id
-          }
-        }
+        format.json { render json: { body: @note.body, user_name: @note.user.name, user_id: @note.user_id, id: @note.id } }
       end
     end
+  end
+
+  def edit
+    @note = Note.find(params[:id])
   end
 
   def destroy

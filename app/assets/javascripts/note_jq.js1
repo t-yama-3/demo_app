@@ -1,6 +1,6 @@
 //jQueryによるAjax(FormDataを使用しない場合)
 $(function() {
-  // 追加するHTMLデータを生成する関数
+  // 追加するDOMノード（HTMLデータ）を生成する関数
   function createHTML(note) {
     let html = `<div class="note" id="note${note.id}">
                   <span class="note_name">投稿者：${note.user_name}</span>
@@ -18,12 +18,14 @@ $(function() {
       url: url,  // リクエストを送信するURLを指定
       type: "POST",  // HTTPメソッドを指定（デフォルトはGET）
       data: {  // 送信するデータをハッシュ形式で指定
-        "note[body]": inputText
+        note: {body: inputText}
       },
       dataType: "json"  // レスポンスデータをjson形式と指定する
+      // dataType: "html"  // レスポンスデータをjson形式と指定する
     })
     .done(function(data) {
       let html = createHTML(data);  // 受信したデータ(data)を元に追加するURLを生成(createHTML関数は冒頭で定義)
+      console.log(data);
       $(".notes").append(html);  // 生成したHTMLをappendメソッドでドキュメントに追加
       $(".note_form-text").val("");  // textareaを空にする
     })

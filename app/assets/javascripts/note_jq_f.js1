@@ -1,6 +1,6 @@
 //jQueryによるAjax（FormDataを使用する場合）
 $(function() {
-  // 追加するHTMLデータを生成する関数
+  // 追加するDOMノード（HTMLデータ）を生成する関数
   function createHTML(note) {
     let html = `<div class="note" id="note${note.id}">
                   <span class="note_name">投稿者：${note.user_name}</span>
