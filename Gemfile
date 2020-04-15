@@ -66,3 +66,5 @@ gem 'pry-rails'
 # gem 'sprockets'
 gem 'devise'
 gem 'jquery-rails'
+gem 'haml-rails'
+

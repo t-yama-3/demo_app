@@ -1,0 +1,6 @@
+%h4 メモを編集する
+.form
+  - if user_signed_in?
+    = form_with(model: @note, local: true, method: :patch) do |form|
+      = form.text_area :body
+      = form.submit "メモを登録"
