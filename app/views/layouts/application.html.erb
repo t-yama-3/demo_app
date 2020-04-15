@@ -12,6 +12,7 @@
   </head>
 
   <body>
+    <%= link_to "トップページ", root_path, class: :top_link %>
     <% if user_signed_in? %>
       <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "devise_btn" %>
       <span class="devise_user devise_user-label">ユーザ名:</span>
