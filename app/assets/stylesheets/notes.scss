@@ -1,3 +1,62 @@
-// Place all the styles related to the notes controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  // font-family: 'Courier New', Courier, monospace;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h4 {
+  margin: 10px 0;
+}
+
+.top_link {
+  padding: 2pt;
+  background-color: #111111;
+  font-size: 12px;
+  text-decoration: none;
+  color: white;
+  border: solid 1px;
+}
+
+.devise_btn {
+  padding: 2pt;
+  background-color: blue;
+  font-size: 12px;
+  text-decoration: none;
+  color: white;
+  border: solid 1px;
+}
+
+.devise_user {
+  &-label {
+    font-size: 12px;
+    color: #111111;
+  }
+  &-name {
+    font-size: 14px;
+    text-decoration: none;
+    color: mediumblue;
+  }
+}
+
+.note {
+  margin: 15px 0;
+  &_name {
+    font-size: 12px;
+    color: darkslateblue;
+  }
+  &_delete {
+    font-size: 12px;
+    color: #999;
+    text-decoration: none;
+  }
+  &_edit {
+    font-size: 12px;
+    color: #999;
+    text-decoration: none;
+  }
+  &_body {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    color: darkblue;
+  }
+}

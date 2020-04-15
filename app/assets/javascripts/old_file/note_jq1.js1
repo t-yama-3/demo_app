@@ -1,0 +1,50 @@
+//jQueryによるAjax（FormDataを使用しない場合）
+$(function() {
+  // 追加するHTMLデータを生成する関数
+  function buildHTML(note) {
+    let html = `<div class="note">
+                  <div class="note_name">
+                    投稿者： ${note.user_name}
+                      <a class="note_delete" rel="nofollow" data-method="delete" href="/notes/${note.id}">削除</a>
+                  </div>
+                  <div>
+                    <p class="note_body">${note.body}</p>
+                  </div>
+                </div>`
+    return html;
+  }
+
+  // 以下、クリックイベントの処理
+  $("#note_input").on("submit", function(e) {
+    e.preventDefault();  // デフォルトのイベント（HTMLデータ送信など）を無効にする
+    let input_text = $(".note_form-text").val();  // textareaの入力値を取得
+    let token = $("*[name=csrf-token]").attr("content");  // tokenの取得(標準)
+        // (参考) let token = $("*[name=authenticity_token]").attr("value");  // formタグ内からでもtokenの取得は可能
+    let url = $(this).attr("action");  // action属性の中身(url)を抽出
+
+    // Ajax通信を実行
+    $.ajax({
+      url: url,
+      type: "POST",
+      data: {
+        "note[body]": input_text,
+        authenticity_token: token
+      },
+      dataType: "json",
+      // processData: false,  // FormDataを使用しない場合は不要（エラーとなる）
+      // contentType: false  // FormDataを使用しない場合は不要（エラーとなる）
+    })
+    .done(function(data) {
+      let html = buildHTML(data);
+      $(".notes").append(html);
+      $(".note_form-text").val("");
+    })
+    .fail(function() {
+      alert("error!");
+    })
+    .always(function() {
+      // $(".note_form-btn").prop("disabled", false);  // デフォルトでは処理実行後にボタンが実行不可能になるため解除する
+      $(".note_form-btn").removeAttr("data-disable-with");  // こちらの記載でないとdisabledの解除ができない
+    })
+  });
+});
