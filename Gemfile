@@ -67,4 +67,4 @@ gem 'pry-rails'
 gem 'devise'
 gem 'jquery-rails'
 gem 'haml-rails'
-
+gem 'payjp'
