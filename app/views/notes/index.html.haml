@@ -1,9 +1,10 @@
-= link_to 'クレジットカード作成', new_card_path
-%br
-- if user_signed_in? && current_user.cards.length > 0
-  = link_to 'クレジットカード確認', card_path(current_user.cards.first)
-%br
-= link_to '商品一覧', purchase_index_path
+- if user_signed_in?
+  = link_to 'クレジットカード作成', new_card_path
+  %br
+  - if current_user.cards.length > 0
+    = link_to 'クレジットカード確認', card_path(current_user.cards.first)
+  %br
+  = link_to '商品一覧', purchase_index_path
 
 %h4 メモアプリ（サンプル）
 .form
