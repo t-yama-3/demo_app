@@ -2,8 +2,7 @@ document.addEventListener(
   "DOMContentLoaded", e => {
     if (document.getElementById('token_submit') != null) {
       Payjp.setPublicKey('pk_test_6a23cbc185cf21b00610bbb5');
-      let btn = document.getElementById('token_submit');
-      btn.addEventListener('click', e => {
+      document.getElementById('token_submit').addEventListener('click', e => {
         e.preventDefault();
         let card = {
           number: document.getElementById('card_number').value,
@@ -13,14 +12,9 @@ document.addEventListener(
         };
         Payjp.createToken(card, (status, response) => {
           console.log(status);
+          console.log(response);
           if (status == 200) {
-            $('#card_number').removeAttr('name');
-            $('#cvc').removeAttr('name');
-            $('#exp_month').removeAttr('name');
-            $('#exp_year').removeAttr('name');
-            $('#card_token').append(
-              $('<input type="hidden" name="payjp-token">').val(response.id)
-            );
+            document.getElementById('card_token').setAttribute("value", response.id);
             document.inputForm.submit();
             alert('登録しました');
           } else {

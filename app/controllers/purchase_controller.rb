@@ -19,7 +19,7 @@ class PurchaseController < ApplicationController
       :customer => card.customer_id,
       :currency => 'jpy',
     )
-    redirect_to action: 'done'
+    redirect_to done_purchase_index_path
   end
 
   def done
