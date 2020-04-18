@@ -2,6 +2,7 @@ class CardController < ApplicationController
   require "payjp"
   def new
     card = Card.where(user_id: current_user.id)
+    @Month = Month.all
     # binding.pry
     redirect_to card_path(card.first.id) if card.exists?
   end
@@ -12,6 +13,7 @@ class CardController < ApplicationController
       redirect_to new_card_path  # カード登録ページに戻る（場合によってはアラートを表示）
     else
       customer = Payjp::Customer.create(card: params['payjp_token'])  # payjpに顧客情報を登録
+      # binding.pry
       @card = Card.new(user_id: current_user.id, customer_id: customer.id, card_id: customer.default_card)  # アプリケーションサーバにカード情報を登録
       if @card.save
         redirect_to card_path(current_user.id)
