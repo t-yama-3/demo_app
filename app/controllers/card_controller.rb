@@ -2,8 +2,6 @@ class CardController < ApplicationController
   require "payjp"
   def new
     card = Card.where(user_id: current_user.id)
-    @Month = Month.all
-    # binding.pry
     redirect_to card_path(card.first.id) if card.exists?
   end
 
