@@ -1,4 +1,6 @@
 window.addEventListener("load", function() {
+  // console.log(document.getElementById("note_input"));
+  if (document.getElementById("note_input") == null) { return; }
   let token = document.getElementsByName("csrf-token")[0].content; //セキュリティトークンの取得
   // 追加するDOMノード（HTMLデータ）を生成する関数
   function createHTML(note) {

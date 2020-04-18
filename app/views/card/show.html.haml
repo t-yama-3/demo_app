@@ -1,0 +1,5 @@
+= 'カード番号：' + '**** **** **** ' + @card_info.last4
+%br
+= '有効期限：' + @card_info.exp_month.to_s + '月 / ' + @card_info.exp_year.to_s + '年'
+%br
+= link_to '削除する', card_path, method: :delete
