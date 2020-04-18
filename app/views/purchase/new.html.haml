@@ -1,0 +1,9 @@
+%h3 購入を確定しますか？
+%p Apple MacBook Pro<br>¥135,000<br>
+%h3 支払い方法
+- if @card_info.present?
+  = "**** **** **** " + @card_info.last4
+  = @card_info.exp_month.to_s + ' / ' + @card_info.exp_year.to_s
+  %br
+  = form_tag purchase_index_path, method: :post do
+    %button 購入する

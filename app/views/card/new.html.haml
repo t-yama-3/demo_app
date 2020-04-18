@@ -1,14 +1,14 @@
 = form_tag card_index_path, method: :post, name: 'inputForm' do
-  %label カード番号
+  カード番号
   = text_field_tag 'number', '', placeholder: '半角数字のみ', maxlength: '16'
   %br
-  %label 有効期限
+  有効期限
   = select_tag :exp_month, options_for_select([['01', 1], ['02', 2], ['03', 3], ['04', 4], ['05', 5], ['06', 6], ['07', 7], ['08', 8], ['09', 9], ['10', 10], ['11', 11], ['12', 12]]), {prompt: '--'}
-  %span 月/
+  月/
   = select_tag :exp_year, options_for_select([['20', 2020],['21', 2021], ['22', 2022], ['23', 2023], ['24', 2024], ['25', 2025], ['26', 2026], ['27', 2027], ['28', 2028], ['29', 2029]]), {prompt: '--'}
-  %span 年
+  年
   %br
-  %label セキュリティコード
+  セキュリティコード
   = text_field_tag 'cvc', '', placeholder: 'カード背面3〜4桁の番号', maxlength: '4'
   = hidden_field_tag :payjp_token
   = submit_tag '追加する', id: 'token_submit'
